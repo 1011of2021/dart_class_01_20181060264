@@ -60,9 +60,36 @@ void variable() {
   print(' 类型检查 集合: $set ');
 }
 
+// 内置类型
+void builtIn() {
+  // 整数，十六进制和指数(科学计数法)
+  var x = 1;
+  var f = 1.2;
+  var hex = 0xDFA45236;
+  var exponent = 8e5;
+
+  print(' Integer: $x, Float: $f,  HEX: $hex, EXPONET: $exponent ');
+
+  // num 类型可以是整数也可以是浮点数
+  num n = 1;
+  print(' Num 类型变量（存整数）: n = $n ');
+  n = 1.2;
+  print(' Num 类型变量（存浮点数）: n = $n ');
+
+  // 字符串转num
+  num a = int.parse('128');
+  print(' 字符串 \'128\' 转 整数 128: $a ');
+
+  // 数字转字符串
+  int b = 128;
+  String tmp = b.toString();
+  print(' 数字 128 转 字符串 \'128\': $b ');
+}
+
 void main(List<String> arguments) {
   var number = 42;
   printInteger(number);
 
   variable();
+  builtIn();
 }
