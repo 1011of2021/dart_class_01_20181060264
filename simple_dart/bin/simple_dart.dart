@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:characters/characters.dart';
 
 // unicode 字符支持
@@ -174,6 +172,15 @@ void builtIn() {
   """);
 }
 
+// 一个实例类
+class A {
+  static void bar() {} // 类的静态方法
+  void baz() {} // 实例的方法
+}
+
+ // 一个顶级函数实例
+void foo() {}
+
 // 用于展示函数参数的定义
 void function_params({required String name}) {
   void say([String? gender]) {
@@ -191,15 +198,10 @@ void function_params({required String name}) {
 }
 
 // 函数
-void function() {
-  print("""
-  |——————————————————————————|
-  |         函数部分          |
-  |__________________________|
-  """);
-
+void function_block() {
   // 参数
   // 传入可选命名参数，函数内部嵌套定义有可选位置参数的函数
+
   function_params(name: "王五");
   print("""
   ====================================================================
@@ -219,20 +221,232 @@ void function() {
   """);
 
   // main 函数
-  print("""
-  main 函数为程序入口，有可选位置参数 List<String> args，类似 Java 的命令行传参，略。
-  """);
+  print("main 函数为程序入口，有可选位置参数 List<String> args，类似 Java 的命令行传参，略。");
 
-  // 函数是一级对象，和python一样，略
+  // 函数是一级对象，和python一样
   print("将函数赋值给变量：var loudify = (msg) => { msg.toUpperCase() }; 同 Kotlin");
+  void printElement(int element) {
+    print(element);
+  }
 
-  // 作用域
-  print("变量作用域规则与java和python类似");
+  var list = [1, 2, 3];
 
-  // 闭包
-  print("函数闭包看起来与 Python 的闭包完全一致");
+  // 将函数 printElement 以参数的形式传入 List 的 forEach 方法
+  list.forEach(printElement);
+
+  // 词法作用域
+  bool topLevel = true;
+
+  void main() {
+    var insideMain = true;
+
+    void myFunction() {
+      var insideFunction = true;
+
+      void nestedFunction() {
+        var insideNestedFunction = true;
+
+        assert(topLevel);
+        assert(insideMain);
+        assert(insideFunction);
+        assert(insideNestedFunction);
+      }
+    }
+  }
+
+    // 闭包
+  print("函数闭包与 Python 的闭包一致，参考 Python 装饰器原理");
+  Function makeAdder(int addBy) {
+    return (int i) => addBy + i;
+  }
+
+  // 传入 2 并将返回的匿名函数赋值给 add2
+  var add2 = makeAdder(2);
+  assert(add2(3) == 5);
+  assert(add2(5) == 7);
+
+  // 函数是否相等
+  
 
 
+
+  Function x;
+
+  // 比较顶级函数
+  x = foo;
+  assert(foo == x);
+
+  // 比较静态方法
+  x = A.bar;
+  assert(A.bar == x);
+
+  // 比较实例方法
+  var v = A(); // class A 的第1个实例
+  var w = A(); // class A 的第2个实例
+  var y = w;
+  x = w.baz;
+
+  // 它们都指向同一个实例的同一个方法
+  assert(y.baz == x);
+
+  // 它们指向不同的实例
+  assert(v.baz != w.baz);
+
+  // 返回值
+  print("没有显示标注返回类型的函数默认 return null;");
+}
+
+// 运算符部分
+void operator_block() {
+  int a;
+  int b;
+
+  // 自增（表达式计算前）
+  a = 0;
+  b = ++a;
+  assert(a == b); 
+
+  // 自增（表达式计算后）
+  a = 0;
+  b = a++;
+  assert(a != b);
+
+  // 自减（表达式计算前）
+  a = 0;
+  b = --a;
+  assert(a == b); 
+
+ // 自减（表达式计算后）
+  a = 0;
+  b = a--; 
+  assert(a != b); 
+
+  // 关系运算
+  assert(2 == 2);
+  assert(2 != 3);
+  assert(3 > 2);
+  assert(2 < 3);
+  assert(3 >= 3);
+  assert(2 <= 3);
+
+  // 强制类型转换
+  assert((1 as double) is double);
+
+  // 类型判断
+  assert(1 is int);
+
+  // 赋值运算符
+  // 将一个值赋给变量 a
+  a = 2;
+  // 若 value 不为 null，则赋值给 b；若 value 为 null，则 b 保持原有值
+  // b ??= value;
+
+  // 复合赋值运算符
+  a *= 3; // 与后方表达式等效: a = a * 3
+  assert(a == 6);
+
+  // 逻辑运算符
+  var col = 0;
+  if (!false && (col == 0 || col == 3)) {
+    assert(true);
+  }
+
+  // 位运算和移位运算符
+  final value = 0x22;
+  final bitmask = 0x0f;
+
+  assert((value & bitmask) == 0x02); // 与
+  assert((value & ~bitmask) == 0x20); // 与非
+  assert((value | bitmask) == 0x2f); // 或
+  assert((value ^ bitmask) == 0x2d); // 异或
+  assert((value << 4) == 0x220); // 左移
+  assert((value >> 4) == 0x02); // 右移
+  assert((value >>> 4) == 0x02); // 逻辑右移
+  assert((-value >> 4) == -0x03); // 算数右移
+  assert((-value >>> 4) > 0); // 无符号右移
+
+  // 条件表达式
+  var visibility = true ? 'public' : 'private';
+  String playerName(String? name) => name ?? 'Guest';
+
+  // 以上两种可以写成以下形式
+  // 使用三元运算符替代臃肿的 if-else 的 return 结构
+  // String playerName(String? name) => name != null ? name : 'Guest';
+
+  // 使用 if-else 的臃肿形式
+  // String playerName(String? name) {
+  //   if (name != null) {
+  //     return name;
+  //   } else {
+  //     return 'Guest';
+  //   }
+  // }
+
+  // 级联运算符（函数式编程？）
+  // 级联操作可以嵌套
+  var paint = 3
+      ..toString();
+  
+  // 使用 ?.. 避免对可能为空的返回值使用级联
+  paint
+  ?..toString();
+
+  // 其他运算符
+  // ()	使用方法	代表调用一个方法
+  // []	访问 List	访问 List 中特定位置的元素
+  // .	访问成员	成员访问符
+  // ?.	条件访问成员	与上述成员访问符类似，但是左边的操作对象不能为 null，例如 foo?.bar，如果 foo 为 null 则返回 null ，否则返回 bar
+
+  // If 和 Else
+  if (true) {
+    print("true branch");
+  } else {
+    print("false branch");
+  }
+
+  // For 循环
+  var message = StringBuffer('Dart is fun');
+  for (var i = 0; i < 5; i++) {
+    message.write('!');
+  }
+
+  var callbacks = [];
+  for (var i = 0; i < 2; i++) {
+    callbacks.add(() => print("For : $i"));
+  }
+  callbacks.forEach((c) => c());
+
+  // For-In 遍历
+  List for_in = [1, 2, 3, 4, 5, 6];
+  for (final item in for_in) {
+    print("For-In : $item");
+  }
+
+  print("forEach 方法: ");
+  for_in.forEach(print);
+
+  // while, break and continue
+  int while_flag = 0;
+  while (while_flag < 10) {
+    if (while_flag == 5) {
+      print("当 while flag == 5，使用 continue 不打印 while 循环字样");
+      while_flag++;
+      continue;
+    }
+    else if (while_flag == 9) {
+      print("当 while flag == 9 时使用 break 结束 while 循环");
+      break;
+    }
+    else {
+      print("while 循环 $while_flag");
+    }
+    while_flag++;
+  }
+
+  // 可迭代对象的函数式 while 循环，打印每个 >= 2 的值
+  for_in
+    .where((c) => c >= 2)
+    .forEach((c) => print(c));
 }
 
 void main(List<String> arguments) {
@@ -242,5 +456,6 @@ void main(List<String> arguments) {
   variable();
   graphemeClusters();
   builtIn();
-  function();
+  function_block();
+  operator_block();
 }
