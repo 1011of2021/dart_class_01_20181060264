@@ -396,8 +396,10 @@ void operator_block() {
   // []	访问 List	访问 List 中特定位置的元素
   // .	访问成员	成员访问符
   // ?.	条件访问成员	与上述成员访问符类似，但是左边的操作对象不能为 null，例如 foo?.bar，如果 foo 为 null 则返回 null ，否则返回 bar
+}
 
-  // If 和 Else
+void process_control_block() {
+    // If 和 Else
   if (true) {
     print("true branch");
   } else {
@@ -447,6 +449,33 @@ void operator_block() {
   for_in
     .where((c) => c >= 2)
     .forEach((c) => print(c));
+  
+  // Switch-Case
+  var command = 'OPEN';
+  switch (command) {
+    case 'CLOSED':
+      break;
+    case 'PENDING':
+      break;
+    case 'APPROVED':
+      break;
+    case 'DENIED':
+      break;
+    case 'OPEN':
+      print("Switch Case found OPEN");
+      break;
+    default:
+      print("Switch Case 无匹配");
+  }
+
+  // 断言
+  assert(100 > 15, "这个断言一定能正常通过");
+
+  // 异常
+  // throw FormatException('Expected at least 1 section');
+  // 可以抛出任何东西
+  // throw 'Out of llamas!';
+
 }
 
 void main(List<String> arguments) {
