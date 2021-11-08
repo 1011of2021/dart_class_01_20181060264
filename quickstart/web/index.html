@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.dart.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 表单转JSON实例 -->
+  <h1>表单与JSON</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th> </th>
+        <th>Enter value</th>
+        <th>Data type</th>
+        <th>JSON string</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td align="right">Favorite number:</td>
+        <td><input type="text" id="favoriteNumber"></td>
+        <td>integer</td>
+        <td><textarea class="result" id="intAsJson" readonly></textarea></td>
+      </tr>
+
+      <tr>
+        <td align="right">Do you know pi?</td>
+        <td><input type="text" id="valueOfPi"></td>
+        <td>double</td>
+        <td><textarea class="result" id="doubleAsJson" readonly></textarea></td>
+      </tr>
+
+      <tr>
+        <td align="right">What's your sign?</td>
+        <td><input type="text" id="horoscope"></td>
+        <td>String</td>
+        <td><textarea class="result" id="stringAsJson" readonly></textarea></td>
+      </tr>
+
+      <tr>
+        <td align="right">A few of your favorite things?</td>
+        <td>
+          <input type="text" id="favOne">
+          <input type="text" id="favTwo">
+          <input type="text" id="favThree">
+        </td>
+        <td>List&lt;String&gt;</td>
+        <td><textarea class="result" id="listAsJson" readonly></textarea></td>
+      </tr>
+
+      <tr>
+        <td align="right">I love chocolate!</td>
+        <td>
+          <form>
+            <input type="radio" name="chocolate" id="loveChocolate" checked>True
+            <input type="radio" name="chocolate" id="noLoveForChocolate" checked>False
+          </form>
+        </td>
+        <td>bool</td>
+        <td><textarea class="result" id="boolAsJson" readonly> </textarea></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div>
+    <label>All data together as a map</label><br>
+    <textarea id="mapAsJson" readonly></textarea>
+  </div>
+
+  <!-- 异步编程实例 -->
+  <h1>异步按钮事件</h1>
+  <button id="getWords">点击获取 BILIBILI UP主 “音乐私藏馆”的视频列表</button>
+  <ul id="wordList"></ul>
+</body>
+
+</html>
