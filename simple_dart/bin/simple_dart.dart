@@ -1,5 +1,7 @@
 import 'package:characters/characters.dart';
 
+typedef IntList = List<int>;
+
 // unicode 字符支持
 void graphemeClusters() {
   var hi = "Hi, 🇨🇳";
@@ -8,10 +10,167 @@ void graphemeClusters() {
   print("最后一个字符: ${hi.characters.last}");
 }
 
+
+// 自定义注解，让某人做某事
+class Todo {
+  final String who;
+  final String what;
+
+  const Todo(this.who, this.what);
+}
+
+
+// 异步生成器 返回值为 Stream<Type> 并使用 async* 关键字
+Stream<int> asynchronousNaturalsTo(int n) async* {
+  int k = 0;
+  while (k < n) yield k++;
+}
+
+// 生成器使用 yield 抛出值，同 Python
+// 同步生成器 返回值为Iterator<Type> 并使用 sync* 关键字
+// 如果生成器有递归调用，使用 yield* 提升执行性能
+Iterable<int> naturalsTo(int n) sync* {
+  int k = 0;
+  while (k < n) yield k++;
+}
+
+
+// 使用 extends 关键字使得泛型只支持指定的范围
+// extends Object 常用于指定非空类型
+class Foo<T extends Object> {
+  // Any type provided to Foo for T must be non-nullable.
+}
+
+
+// 泛型接口
+abstract class Cache<T> {
+  T getByKey(String key);
+  void setByKey(String key, T value);
+}
+
+
+class Point {
+  double? x; // Declare instance variable x, initially null.
+  double? y; // Declare y, initially null.
+  double? z; // Declare z, initially 0.
+
+  Point(double? x, double? y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  // 构造函数重定向
+  Point.alongXAxis(double x) : this(x, 0);
+
+  double distanceTo(Point other) {
+    return 10.0;
+  }
+}
+
+
+class Vector {
+  final int x, y;
+
+  Vector(this.x, this.y);
+
+  // 操作符重载
+  // 重载 +
+  Vector operator +(Vector v) => Vector(x + v.x, y + v.y);
+  // 重载 -
+  Vector operator -(Vector v) => Vector(x - v.x, y - v.y);
+}
+
+
+class Rectangle {
+  double left, top, width, height;
+
+  Rectangle(this.left, this.top, this.width, this.height);
+
+  double get right => left + width;
+  set right(double value) => left = value - width;
+  double get bottom => top + height;
+  set bottom(double value) => top = value - height;
+}
+
+
+abstract class Doer {
+  // 使用 abstract 关键字定义接口
+
+  void doSomething(); // 定义接口的方法
+}
+
+
+class EffectiveDoer extends Doer {
+  void doSomething() {
+    // 实现继承的接口的方法
+    print("这是接口实现的 print 方法");
+  }
+}
+
+
+// 一个 person 类， 实现了 greet() 方法
+class Person {
+  final String _name;
+
+  Person(this._name);
+
+  // Perdon 实现的 greet 方法
+  String greet(String who) => 'Hello, $who. I am $_name.';
+}
+
+// 实现了 Person 类 API 的类
+class Impostor implements Person {
+  String get _name => '';
+
+  String greet(String who) => 'Hi $who. Do you know who I am?';
+}
+
+String greetBob(Person person) => person.greet('Bob');
+
+
+class Performer {
+  String name = "1";
+ }
+
+
+class Musician extends Performer with Musical {
+  // ···
+}
+
+class Maestro extends Musician with Musical {
+  Maestro(String maestroName) {
+    name = maestroName;
+    canConduct = true;
+  }
+}
+
+
+mixin Musical {
+  bool canPlayPiano = false;
+  bool canCompose = false;
+  bool canConduct = false;
+
+  void entertainMe() {
+    if (canPlayPiano) {
+      print('Playing piano');
+    } else if (canConduct) {
+      print('Waving hands');
+    } else {
+      print('Humming to self');
+    }
+  }
+}
+
+
+// 定义枚举
+enum Color { red, green, blue }
+
+
 // 一个简单的 DART 程序
 void printInteger(int aNumber) {
   print(' This number is $aNumber. ');
 }
+
 
 int _readThermometer() {
   return 42;
@@ -470,12 +629,121 @@ void process_control_block() {
 
   // 断言
   assert(100 > 15, "这个断言一定能正常通过");
+  print("断言 100 > 15 正常通过");
 
   // 异常
   // throw FormatException('Expected at least 1 section');
   // 可以抛出任何东西
   // throw 'Out of llamas!';
+  // 可以悬挂 finally 关键字，效果同 Python
 
+  // 构造函数，可以使用 C++ 的方式在函数名和函数体之间初始化变量
+  var p = Point(2, 2);
+
+  // 获取实例中 y的值
+  assert(p.y == 2);
+
+  // 调用实例方法
+  double distance = p.distanceTo(Point(4, 4));
+
+  // 可以使用构造函数返回构造好的实例
+  var point = Point(1, 2);
+  point.x = 4; 
+  assert(point.x == 4);
+  assert(point.z == null);
+  print("没有传值的属性使用空安全特性可以直接初始化为Null");
+
+  // 操作符重载
+  print("操作符重载");
+  final v = Vector(2, 3);
+  final w = Vector(2, 2);
+
+  assert(v + w == Vector(4, 5));
+  print("Vector(2, 3) + Vector(2, 2) = Vector(4, 5)，重载了 +");
+  assert(v - w == Vector(0, 1));
+
+  // Getter 和 Setter
+  var rect = Rectangle(3, 4, 20, 15);
+  assert(rect.left == 3);
+  rect.right = 12;
+  assert(rect.left == -8);
+  print("使用 type get property_name => {} 定义Getter\n使用 set property_name(params) => {} 定义Setter");
+
+  // 定义接口（抽象）
+  print("使用 abstract 关键字定义接口");
+
+  // 隐式接口
+  print("使用 class ClassName implements OtherClass1, OtherClass2, ... {} 来实现其他类的接口，避免直接继承 OtherClass");
+
+  // 扩展一个类
+  print("使用 class ClassName extends OtherClass {} 可以扩展一个类，使用 super 引用父类，使用 @override 重写父类成员");
+
+  // 泛型示例在上边儿
+
+  // 使用库
+  print("""
+import 'package:lib1/lib1.dart';
+import 'package:lib2/lib2.dart' as lib2;
+
+
+三方库前缀：package
+// 只导入 foo
+import 'package:lib1/lib1.dart' show foo;
+
+// 不导入 foo
+import 'package:lib2/lib2.dart' hide foo;
+
+
+延迟导入只支持 dart2js，例如：import 'package:greetings/hello.dart' deferred as hello;
+使用 API 时使用 .loadLibrary() 方法加载库
+Future<void> greet() async {
+  await hello.loadLibrary();
+  hello.printGreeting();
+}
+""");
+
+  // 异步支持
+  print("""
+异步编程使用 async await 关键字，也可以使用 Future API
+使用 try-catch-finally 处理 await 导致的异常
+使用 Future<String> lookUpVersion() async => '1.0.0'; 声明一个异步函数
+
+使用 await for 处理异步 Stream
+await for (varOrType identifier in expression) {
+  // Executes each time the stream emits a value.
+}
+""");
+
+  // 生成器
+  // 同步生成器返回 Iterator 对象，异步生成器返回 Stream 对象
+
+  // 可调用类，实现 Type call() 方法，同 Python 的 __call__() 魔法方法
+
+  // isolate 代替线程
+
+  // 别名
+  IntList il = [1, 2, 3];
+  print("别名为 IntList 的 List<int> 类型的变量: $il");
+
+  // 元数据 @+编译时常量，使用反射在运行时获取元数据信息
+  @Todo('石洋', '让这个函数打印 do something')
+  void doSomething() {
+    print('do something');
+  }
+
+  doSomething();
+
+  // 单行注释
+  
+  /**
+   * 多行注释
+  */
+
+  /// 文档注释示例
+  void docExample() {
+
+  }
+  
 }
 
 void main(List<String> arguments) {
@@ -487,4 +755,5 @@ void main(List<String> arguments) {
   builtIn();
   function_block();
   operator_block();
+  process_control_block();
 }
